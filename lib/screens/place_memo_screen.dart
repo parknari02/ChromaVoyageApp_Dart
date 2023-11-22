@@ -71,144 +71,139 @@ class _PlaceMemoState extends State<PlaceMemo> {
             ],
           ),
           SizedBox(height: 20),
-          Container(
-            width: double.infinity,
-            height: 444,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3),
-                ),
-              ],
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: ListView(
-              padding: EdgeInsets.symmetric(vertical: 11, horizontal: 15),
-              children: [
-                Text(
-                  'MY PLAN',
-                  style: TextStyle(
-                    color: Color(0xFF6540B4),
-                    fontSize: 25,
-                    fontFamily: 'Droid Sans',
-                    fontWeight: FontWeight.w700,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight, // 화면 높이에서 바텀 네비게이션바 높이를 뺍니다.
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 197, 197, 197).withOpacity(0.7),
+                    width: 1.0,
                   ),
                 ),
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: dateList.map((date) {
-                    return Column(
+                child: ListView(
+                  padding: EdgeInsets.symmetric(vertical: 11, horizontal: 15),
+                  
+                  children: [
+                    
+                    Text(
+                      'MY PLAN',
+                      style: TextStyle(
+                        color: Color(0xFF6540B4),
+                        fontSize: 25,
+                        fontFamily: 'Droid Sans',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                      children: dateList.map((date) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              date,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Droid Sans',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: () {
-                                // 여기에서 장소 추가 창을 띄우고 입력된 장소를 처리하는 로직을 구현
-                                _showPlaceDialog(date);
-                              },
-                              child: Icon(
-                                Icons.add_location,
-                                color: Color(0xFFC19CFF),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: () {
-                                // 여기에서 메모 추가 창을 띄우고 입력된 메모를 처리하는 로직을 구현
-                                _showMemoDialog(date);
-                              },
-                              child: Icon(
-                                Icons.insert_drive_file,
-                                color: Color(0xFF8CB8FB),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (placesAndMemosByDate.containsKey(date))
-                          Column(
-                            children: placesAndMemosByDate[date]!.map((item) {
-                              if (item.startsWith('Place:')) {
-                                return Container(
-                                  width: 250,
-                                  margin: EdgeInsets.only(left: 30, top: 5, bottom: 15),
-                                  padding: EdgeInsets.all(10),
-                                   decoration: ShapeDecoration(
-                                    color: Color(0xFFFBF9FF),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                    shadows: [
-                                      BoxShadow(
-                                        color: Color(0x3F000000),
-                                        blurRadius: 6,
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 0,
-                                      )
-                                    ],
+                            Row(
+                              children: [
+                                Text(
+                                  date,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: 'Droid Sans',
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  
-                                  
-                                  child: Text(
-                                    item.replaceFirst('Place:', ''),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'Droid Sans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  
-                                );
-                              } else {
-                                return 
-                                Container(
-                                  margin: EdgeInsets.only(left: 30, top: 5, bottom: 15),
-                                  padding: EdgeInsets.all(10),
-                                  width: 250,
-                                  decoration: ShapeDecoration(
-                                  color: Color(0xFFF8FAFF),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Color(0x3F000000),
-                                      blurRadius: 6,
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
                                 ),
-                                  child: Text(
-                                    item,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'Droid Sans',
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                SizedBox(width: 10),
+                                GestureDetector(
+                                  onTap: () {
+                                    // 여기에서 장소 추가 창을 띄우고 입력된 장소를 처리하는 로직을 구현
+                                    _showPlaceDialog(date);
+                                  },
+                                  child: Icon(
+                                    Icons.add_location,
+                                    color: Color(0xFFC19CFF),
                                   ),
-                                );
-                              }
-                            }).toList(),
-                          ),
-                      ],
-                    );
-                  }).toList(),
+                                ),
+                                SizedBox(width: 10),
+                                GestureDetector(
+                                  onTap: () {
+                                    // 여기에서 메모 추가 창을 띄우고 입력된 메모를 처리하는 로직을 구현
+                                    _showMemoDialog(date);
+                                  },
+                                  child: Icon(
+                                    Icons.insert_drive_file,
+                                    color: Color(0xFF8CB8FB),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (placesAndMemosByDate.containsKey(date))
+                              Column(
+                                children: placesAndMemosByDate[date]!.map((item) {
+                                  if (item.startsWith('Place:')) {
+                                    return Container(
+                                      width: 250,
+                                      margin: EdgeInsets.only(left: 30, top: 5, bottom: 15),
+                                      padding: EdgeInsets.all(10),
+                                       decoration: ShapeDecoration(
+                                        color: Color(0xFFFBF9FF),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                        shadows: [
+                                          BoxShadow(
+                                            color: Color(0x3F000000),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 0),
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                      child: Text(
+                                        item.replaceFirst('Place:', ''),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Droid Sans',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return 
+                                    Container(
+                                      margin: EdgeInsets.only(left: 30, top: 5, bottom: 15),
+                                      padding: EdgeInsets.all(10),
+                                      width: 250,
+                                      decoration: ShapeDecoration(
+                                        color: Color(0xFFF8FAFF),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                        shadows: [
+                                          BoxShadow(
+                                            color: Color(0x3F000000),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 0),
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Droid Sans',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }).toList(),
+                              ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],

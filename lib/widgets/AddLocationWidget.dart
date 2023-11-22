@@ -20,7 +20,7 @@ class _AddLocationState extends State<AddLocation> {
   DateTime selectedDate = DateTime.now();
 
   List<String> koreanLocations = [
-    "서울", "광주", "부산", "대구", "인천", "대전", "울산", "경기", "강원", "충청", "전라", "경상"
+    "seoul", "서울", "광주", "부산", "대구", "인천", "대전", "울산", "경기", "강원", "충청", "전라", "경상"
   ];
 
   String selectedLocation = "";
