@@ -1,3 +1,5 @@
+import 'package:chromavoyage_client/main.dart';
+import 'package:chromavoyage_client/screens/place_memo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -131,6 +133,39 @@ class _AddLocationState extends State<AddLocation> {
                   },
                 ),
               ),
+            
+            
+            Padding(
+              padding: EdgeInsets.only(top: 120),
+              child: InkWell(
+            onTap: () {
+              // 이미지가 눌렸을 때 새로운 위젯으로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlaceMemo(
+                  selectedLocation: location2Controller.text,
+                  selectedDate: locationController.text,
+                )), // 두 번째 위젯으로 이동
+              );
+            },
+            child: Image.asset(
+              'lib/assets/Group 10.png', // 이미지 경로를 설정하세요
+              width:110, // 이미지의 폭을 조절하세요
+              height:110, // 이미지의 높이를 조절하세요
+            ),
+          ),
+          ),
+          
+            Text(
+              '여행 계획을 추가하세요!',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color:
+                Colors.black.withOpacity(0.2),
+              ),
+            
+          ),
           ],
         ),
       ),
