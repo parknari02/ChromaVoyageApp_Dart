@@ -1,7 +1,7 @@
 import 'package:chromavoyage_client/screens/create_group_screen.dart';
 import 'package:chromavoyage_client/widgets/AddLocationWidget.dart';
 import 'package:flutter/material.dart';
-
+import 'screens/map_screen.dart';
 import 'models/group.dart';
 
 void main() => runApp(MyApp());
@@ -42,6 +42,13 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
           groups.add(createdGroup);
         });
       }
+    } else if (index == 0) {  // 'map' 버튼을 눌렀을 때
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyMap(),
+        ),
+      );
     } else {
       setState(() {
         _selectedIndex = index;

@@ -31,7 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.17.0 
-
+  webview_flutter: ^3.0.0
+  google_maps_flutter: ^2.5.0
+  flutter_map: ^0.13.0
+  http: ^0.13.6
+  flutter_dotenv: ^5.1.0
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -58,6 +63,8 @@ flutter:
     - lib/assets/Group 10.png
     - lib/assets/memo.png
     - lib/assets/place.png
+    - lib/assets/location.json
+    - .env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
