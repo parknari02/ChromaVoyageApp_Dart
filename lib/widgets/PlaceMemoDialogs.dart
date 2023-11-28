@@ -41,7 +41,7 @@ class PlaceMemoDialogs {
                   ),
                 ),
                 Container(
-                  height: 200,
+                  height: 180,
                   child: ListView.builder(
                     itemCount: placeResults.length,
                     itemBuilder: (context, index) {
@@ -58,7 +58,26 @@ class PlaceMemoDialogs {
                     },
                   ),
                 ),
-                SizedBox(height: 30),
+                
+                 Align(
+                  alignment: Alignment.centerLeft, // 오른쪽 정렬
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      '시간 설정하기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                  
+                  Divider(
+                    color: Color.fromARGB(255, 222, 222, 222),
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -202,36 +221,69 @@ class PlaceMemoDialogs {
 }
 
 
-  static Future<void> showMemoDialog(BuildContext context, String date, Function(String) onMemoAdded) async {
-    String newMemo = '';
+  static Future<void> showMemoDialog(
+    BuildContext context, String date, Function(String) onMemoAdded) async {
+  String newMemo = '';
+  TextEditingController _memoController = TextEditingController();
 
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('메모 추가'),
-          content: Column(
-            children: [
-              TextField(
-                onChanged: (value) {
-                  newMemo = value;
-                },
-                decoration: InputDecoration(
-                  hintText: '메모를 입력하세요',
+  await showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: Column(
+              children: [
+                 Align(
+                  alignment: Alignment.centerLeft, // 오른쪽 정렬
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      '메모 추가하기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onMemoAdded(newMemo);
-                },
-                child: Text('추가'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _memoController,
+                    onChanged: (value) {
+                      setState(() {
+                        newMemo = value;
+                      });
+                    },
+                    maxLines: null,
+                    decoration: InputDecoration(
+                    hintText: '추가할 메모를 입력하세요',
+                    border: OutlineInputBorder(), // 네모박스 스타일
+                  ),
+                  ),
+                ),
+                SizedBox(height: 60),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    onMemoAdded(newMemo);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF6540B4), // 보라색으로 변경
+                    fixedSize: Size.fromWidth(310), // 원하는 가로 크기로 설정
+                  ),
+                  child: Text('메모 추가'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
 }

@@ -70,42 +70,127 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: ListView.builder(
-          itemCount: groups.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(groups[index].groupName),
-              subtitle: Text(groups[index].invitedPeople.join(', ')),
-              onTap: () {
-                // 원하는 동작 추가
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddLocation(),
-                  ),
-                );
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 250, 250, 250), // Set background color to white
+          elevation: 0, // Set elevation to 0 for no shadow
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: Color(0xFFB28EFF),
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                '박나리님',
+                style: TextStyle
+                ( color: Color(0xFF6540B4) ,
+                  fontSize: 14), // Adjust font size as needed
+              ),
+            ],
+          ),
+          actions: [ 
+            IconButton(
+              icon: Icon(Icons.menu, color: Color(0xFF6540B4), size: 30),
+              onPressed: () {
+                // Add your logic for the menu icon press
               },
+            ),
+          ],
+        ),
+        
+        body: 
+        
+        
+        ListView.builder(
+  itemCount: groups.length,
+  itemBuilder: (context, index) {
+    return Container(
+      height: 85, // Adjust the height as needed
+      margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+      child: Card(
+        elevation: 4,
+        child: ListTile(
+          title: Padding(
+            padding: EdgeInsets.only(bottom: 12),
+            child: Text(
+              groups[index].groupName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                
+              ),
+            ),
+          ),
+          
+          subtitle: Row(
+            children: [
+              CircleAvatar(
+                radius: 11,
+                backgroundColor: Color.fromARGB(255, 21, 21, 21),
+                child: Icon(
+                  Icons.person,
+                  size: 16,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(groups[index].invitedPeople.first),
+              SizedBox(width: 2),
+              Text('외 ${groups[index].invitedPeople.length - 1}명'),
+            ],
+          ),
+          
+          trailing: Column(
+  mainAxisAlignment: MainAxisAlignment.end,
+  mainAxisSize: MainAxisSize.min, // Set mainAxisSize to MainAxisSize.min
+  crossAxisAlignment: CrossAxisAlignment.end,
+  children: [
+    IconButton(
+      icon: Icon(Icons.close, size: 14),
+      onPressed: () {
+        // Add your logic for 'x' button press
+      },
+    ),
+  ],
+),
+          
+          onTap: () {
+            // 원하는 동작 추가
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddLocation(),
+              ),
             );
           },
         ),
+      ),
+    );
+  },
+),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.map),
               label: 'map',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.wb_cloudy),
+              icon: Icon(Icons.home),
               label: 'home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.star),
+              icon: Icon(Icons.add),
               label: 'add',
             ),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.white,
-          backgroundColor: Colors.deepPurple[200],
+          backgroundColor: Color(0xFF6540B4),
           onTap: _onItemTapped,
         ),
       ),
@@ -114,147 +199,3 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 
-// void main() => runApp(MyApp());
-
-// class MyApp extends StatelessWidget {
-//   final _title = 'Flutter SketchApp';
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: _title,
-//       home: const MyStatefulWidget(),
-//     );
-//   }
-// }
-
-// class MyStatefulWidget extends StatefulWidget {
-//   const MyStatefulWidget({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyStatefulWidget> createState() => MyStatefulWidgetState();
-
-  
-// }
-
-// class MyStatefulWidgetState extends State<MyStatefulWidget> {
-//     List<Group> groups = [];
-    
-
-//   Future<void> _onItemTapped(int index) async {
-//     if (index == 2) { // 'add' 버튼을 눌렀을 때
-//       Group createdGroup = await Navigator.push(
-//         context,
-//         MaterialPageRoute(
-//           builder: (context) => CreateGroupScreen(),
-//         ),
-//       );
-
-//       // Check if the createdGroup is not null and add it to the list
-//       if (createdGroup != null) {
-//         setState(() {
-//           groups.add(createdGroup);
-//           print(createdGroup.groupName);
-          
-//         });
-//       }
-//     } else {
-//       setState(() {
-//         _selectedIndex = index;
-//       });
-//     }
-//   }
-//   final PageController _pageController = PageController();
-
-//   int _selectedIndex = 1;
-
-//   static const TextStyle optionStyle =
-//       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-//   static const List<Widget> _widgetOptions = <Widget>[
-//     Text(
-//       '나중에 지도페이지',
-//       style: optionStyle,
-//     ),
-//     Text(
-//       '홈화면임',
-//       style: optionStyle,
-//     ),
-//     Text(
-//       'Star',
-//       style: optionStyle,
-//     ),
-//   ];
-
-//   @override
-//   void dispose() {
-//     _pageController.dispose();
-//     super.dispose();
-//   }
-//
-
-//   void returnToMain(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//     Navigator.pop(context);
-//   }
-
-//   @override
-// Widget build(BuildContext context) {
-//   return MaterialApp(
-//     home: Scaffold(
-//       // appBar: AppBar(
-//       //   title: const Text('Flutter Sketch Application'),
-//       // ),
-//       body: PageView(
-//         controller: _pageController,
-//         children: <Widget>[
-//           Scaffold(
-//             body: Center(
-//               child: _widgetOptions.elementAt(_selectedIndex),
-//             ),
-//             bottomNavigationBar: BottomNavigationBar(
-//               items: const <BottomNavigationBarItem>[
-//                 BottomNavigationBarItem(
-//                   icon: Icon(Icons.home),
-//                   label: 'map',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: Icon(Icons.wb_cloudy),
-//                   label: 'home',
-//                 ),
-//                 BottomNavigationBarItem(
-//                   icon: Icon(Icons.star),
-//                   label: 'add',
-//                 ),
-//               ],
-//               currentIndex: _selectedIndex,
-//               selectedItemColor: Colors.white,
-//               backgroundColor: Colors.deepPurple[200],
-//               onTap: _onItemTapped,
-//             ),
-//           ),
-          
-//         ],
-//       ),
-//       // Drawer를 여기에 추가
-//        drawer: Drawer(
-//         child: ListView.builder(
-//           itemCount: groups.length,
-//           itemBuilder: (context, index) {
-//             return ListTile(
-//               title: Text(groups[index].groupName),
-//               subtitle: Text(groups[index].invitedPeople.join(', ')),
-//               onTap: () {
-//                 // 원하는 동작 추가
-//               },
-//             );
-//           },
-//         ),
-//       ),
-      
-//     ),
-//   );
-// }
-// }
