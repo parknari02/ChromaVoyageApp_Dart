@@ -64,6 +64,7 @@ flutter:
     - lib/assets/memo.png
     - lib/assets/place.png
     - lib/assets/location.json
+    - lib/assets/logo.png
     - .env
 
   # The following line ensures that the Material Icons font is

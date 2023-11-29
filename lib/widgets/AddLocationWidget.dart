@@ -3,6 +3,7 @@ import 'package:chromavoyage_client/screens/place_memo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+
 void main() {
   runApp(MaterialApp(
     home: AddLocation(),
@@ -37,6 +38,18 @@ class _AddLocationState extends State<AddLocation> {
       start: selectedDate,
       end: selectedDate,
     ),
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData(
+                      appBarTheme: const AppBarTheme(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xFFB28EFF),  
+                      ),
+                    ),
+        child: child!,
+      );
+    },
+    
   );
 
   if (pickedDateRange != null) {
@@ -63,11 +76,44 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 250, 250, 250), // Set background color to white
+          elevation: 0, // Set elevation to 0 for no shadow
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: Color(0xFFB28EFF),
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                '박나리님',
+                style: TextStyle
+                ( color: Color(0xFF6540B4) ,
+                  fontSize: 14), // Adjust font size as needed
+              ),
+            ],
+          ),
+          actions: [ 
+            IconButton(
+              icon: Icon(Icons.menu, color: Color(0xFF6540B4), size: 30),
+              onPressed: () {
+                // Add your logic for the menu icon press
+              },
+            ),
+          ],
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 50, left: 20, right: 50),
+              padding: EdgeInsets.only(top: 10, left: 20, right: 30),
               child: TextField(
                 controller: location2Controller,
     
@@ -76,7 +122,7 @@ class _AddLocationState extends State<AddLocation> {
                   hintText: '여행할 지역을 검색하세요',
                   hintStyle: TextStyle(
                     color: Colors.black.withOpacity(0.4),
-                    fontSize: 11,
+                    fontSize: 12,
                     fontFamily: 'Droid Sans',
                     fontWeight: FontWeight.w400,
                   ),
@@ -89,14 +135,14 @@ class _AddLocationState extends State<AddLocation> {
               },
               child: AbsorbPointer(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 50),
+                  padding: EdgeInsets.only(left: 20, right: 30),
                   child: TextField(
                     controller: locationController,
                     decoration: InputDecoration(
                       hintText: '여행날짜를 선택하세요',
                       hintStyle: TextStyle(
                         color: Colors.black.withOpacity(0.4),
-                        fontSize: 11,
+                        fontSize: 12,
                         fontFamily: 'Droid Sans',
                         fontWeight: FontWeight.w400,
                       ),
@@ -116,7 +162,7 @@ class _AddLocationState extends State<AddLocation> {
                         filteredLocations[index],
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 10,
+                          fontSize: 12,
                           fontFamily: 'Droid Sans',
                           fontWeight: FontWeight.w400,
                         ),
@@ -172,20 +218,20 @@ class _AddLocationState extends State<AddLocation> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.map),
             label: 'map',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wb_cloudy),
+            icon: Icon(Icons.home),
             label: 'home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star),
+            icon: Icon(Icons.add),
             label: 'add',
           ),
         ],
         selectedItemColor: Colors.white,
-        backgroundColor: Colors.deepPurple[200],
+        backgroundColor: Color(0xFF6540B4),
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {

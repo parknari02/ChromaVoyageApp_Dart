@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import './main_screen.dart';
+import './create_group_screen.dart';
+
 
 void main() {
   runApp(MyMap());
@@ -29,6 +32,36 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     loadPolygons();
   }
+
+  Future<void> _onItemTapped(int index) async {
+  if (index == 0) {  // 'map' 버튼을 눌렀을 때
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  else if (index == 1){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyMain(),
+      ),
+    );
+  } 
+  
+  else {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateGroupScreen(),
+      ),
+    );
+  }
+}
+
+  final PageController _pageController = PageController();
+
+  int _selectedIndex = 0;
 
   Future<void> loadPolygons() async {
     String jsonString = await DefaultAssetBundle.of(context).loadString('lib/assets/location.json');
@@ -62,8 +95,38 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map Example'),
-      ),
+        automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 250, 250, 250), // Set background color to white
+          elevation: 0, // Set elevation to 0 for no shadow
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: Color(0xFFB28EFF),
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                '박나리님',
+                style: TextStyle
+                ( color: Color(0xFF6540B4) ,
+                  fontSize: 14), // Adjust font size as needed
+              ),
+            ],
+          ),
+          actions: [ 
+            IconButton(
+              icon: Icon(Icons.menu, color: Color(0xFF6540B4), size: 30),
+              onPressed: () {
+                // Add your logic for the menu icon press
+              },
+            ),
+          ],
+        ),
       body: GoogleMap(
         onMapCreated: (controller) {
           setState(() {
@@ -71,11 +134,31 @@ class _MapScreenState extends State<MapScreen> {
           });
         },
         initialCameraPosition: CameraPosition(
-          target: LatLng(37.5665, 126.9780), // 서울의 좌표
+          target: LatLng(35.9665, 127.7780), // 서울의 좌표
           zoom: 7.0,
         ),
         polygons: Set<Polygon>.of(polygons),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: 'map',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'add',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          backgroundColor: Color(0xFF6540B4),
+          onTap: _onItemTapped,
+        ),
     );
   }
 }

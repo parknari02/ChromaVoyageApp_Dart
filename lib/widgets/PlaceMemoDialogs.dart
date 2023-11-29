@@ -90,7 +90,7 @@ class PlaceMemoDialogs {
                             onPressed: () async {
                               TimeOfDay? pickedTime = await showTimePicker(
                                 context: context,
-                                initialTime: selectedStartTime,
+                                initialTime: TimeOfDay(hour: 1, minute: 0),
                               );
                               if (pickedTime != null &&
                                   pickedTime != selectedStartTime) {
@@ -119,7 +119,7 @@ class PlaceMemoDialogs {
                             onPressed: () async {
                               TimeOfDay? pickedTime = await showTimePicker(
                                 context: context,
-                                initialTime: selectedEndTime,
+                                initialTime: TimeOfDay(hour: 0, minute: 0),
                               );
                               if (pickedTime != null &&
                                   pickedTime != selectedEndTime) {

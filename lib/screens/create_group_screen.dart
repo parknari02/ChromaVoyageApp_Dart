@@ -109,19 +109,25 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               ),
             ),
             SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: groups.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(groups[index].groupName),
-                      subtitle: Text(groups[index].invitedPeople.join(', ')),
-                    ),
-                  );
-                },
-              ),
-            ),
+//             Expanded(
+//   child: ListView.builder(
+//     itemCount: groups.length,
+//     itemBuilder: (context, index) {
+//       return Card(
+//         child: ListTile(
+//           title: Text(
+//             groups[index].groupName,
+//             style: TextStyle(color: Colors.black), // 검정색으로 변경
+//           ),
+//           subtitle: Text(
+//             groups[index].invitedPeople.join(', '),
+//             style: TextStyle(color: Colors.black), // 검정색으로 변경
+//           ),
+//         ),
+//       );
+//     },
+//   ),
+// ),
           ],
         ),
       ),

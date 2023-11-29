@@ -83,27 +83,45 @@ class _PlaceMemoState extends State<PlaceMemo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 15, left: 20),
-                child: Text(
-                  '${widget.selectedLocation}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Droid Sans',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+          padding: EdgeInsets.only(top: 15, left: 15),
+          child: Container(
+            padding: EdgeInsets.all(10),
+            width: 380,
+            height: 35,
+            decoration: BoxDecoration(
+              color: Color(0xFFE9E1FF),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              '${widget.selectedLocation}',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'Droid Sans',
+                fontWeight: FontWeight.w500,
               ),
+            ),
+          ),
+        ),
               Padding(
-                padding: EdgeInsets.only(top: 20, left: 20),
-                child: Text(
-                  '${widget.selectedDate}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Droid Sans',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+          padding: EdgeInsets.only(top: 12, left: 15),
+          child: Container(
+            padding: EdgeInsets.all(10),
+            width: 380,
+            height: 35,
+            decoration: BoxDecoration(
+              color: Color(0xFFE9E1FF),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              '${widget.selectedDate}',
+              style: TextStyle(
+                fontSize: 13,
+                fontFamily: 'Droid Sans',
+                fontWeight: FontWeight.w500,
               ),
+            ),
+          ),
+        ),
             ],
           ),
           SizedBox(height: 10),
