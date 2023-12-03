@@ -158,9 +158,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     setState(() {
       String groupName = groupNameController.text;
       String invitedPerson = invitedPersonController.text;
+      int groupId = 9999;
       List<String> invitedPeople = invitedPerson.split(',');
 
-      Group newGroup = Group(groupName, invitedPeople);
+      Group newGroup = Group(groupName, invitedPeople, groupId);
       groups.add(newGroup);
 
       // Clear the text fields

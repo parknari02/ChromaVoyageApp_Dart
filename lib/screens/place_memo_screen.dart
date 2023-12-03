@@ -203,7 +203,10 @@ class _PlaceMemoState extends State<PlaceMemo> {
   // 장소와 시간 분리
   List<String> placeAndTime = placeInfo.split(' ');
 
-  return Container(
+  return 
+  
+  
+  Container(
     width: 250,
     margin: EdgeInsets.only(left: 30, top: 10, bottom: 10),
     padding: EdgeInsets.all(10),

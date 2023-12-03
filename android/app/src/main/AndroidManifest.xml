@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:label="chromavoyage_client"
         android:name="${applicationName}"
@@ -29,5 +31,6 @@
         <meta-data android:name="flutterEmbedding" android:value="2"/>
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="YOUR_GOOGLE_MAP_API_KEY"/>
+        
     </application>
 </manifest>

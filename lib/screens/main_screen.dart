@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import './create_group_screen.dart';
 import './map_screen.dart';
 import '../models/group.dart';
 import '../widgets/AddLocationWidget.dart';
+import 'package:http/http.dart' as http; 
 
 
 // import 'screens/create_group_screen.dart';
@@ -29,6 +32,53 @@ class MyStatefulWidget extends StatefulWidget {
 
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<Group> groups = [];
+  
+
+  @override
+  void initState() {
+    super.initState();
+    // initState에서 데이터를 가져오도록 합니다.
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8080/groups/my'),
+        body: jsonEncode({"userId": 1}),
+        headers: {"Content-Type": "application/json"},
+      );
+
+      if (response.statusCode == 200) {
+        print("응답옴");
+        print(response.body);
+        // 서버에서 올바른 응답을 받았을 때 데이터를 업데이트합니다.
+        List<dynamic> data = jsonDecode(response.body);
+
+         setState(() {
+          groups = data.map((groupData) {
+            int groupId = groupData['groupId'];
+            String groupName = groupData['groupName'];
+            List<String> invitedPeople = List<String>.from(groupData['groupMembers']);
+
+            return Group(
+              groupName, invitedPeople, groupId
+            );
+          }).toList();
+        });
+      } else {
+        // 에러 처리를 여기에 추가하세요.
+        print('Failed to load groups. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      // 네트워크 오류 또는 기타 오류 처리
+      print('Error fetching data: $e');
+    }
+  }
+
+
+
 
   Future<void> _onItemTapped(int index) async {
     if (index == 2) {
