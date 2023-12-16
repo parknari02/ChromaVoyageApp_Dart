@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'map_screen.dart';
 import '../main.dart';
 import '../models/group.dart';
+import 'dart:convert';
+import './main_screen.dart';
+import 'package:http/http.dart' as http;
 
 
 class CreateGroupScreen extends StatefulWidget {
@@ -25,7 +28,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   }
 
   else if (index == 1){
-    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyMain(),
+      ),
+    );
   } 
   
   else {
@@ -109,25 +117,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               ),
             ),
             SizedBox(height: 20),
-//             Expanded(
-//   child: ListView.builder(
-//     itemCount: groups.length,
-//     itemBuilder: (context, index) {
-//       return Card(
-//         child: ListTile(
-//           title: Text(
-//             groups[index].groupName,
-//             style: TextStyle(color: Colors.black), // 검정색으로 변경
-//           ),
-//           subtitle: Text(
-//             groups[index].invitedPeople.join(', '),
-//             style: TextStyle(color: Colors.black), // 검정색으로 변경
-//           ),
-//         ),
-//       );
-//     },
-//   ),
-// ),
           ],
         ),
       ),
@@ -154,24 +143,55 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     );
   }
 
-  void createGroup() {
-    setState(() {
-      String groupName = groupNameController.text;
-      String invitedPerson = invitedPersonController.text;
-      int groupId = 9999;
-      List<String> invitedPeople = invitedPerson.split(',');
+  void createGroup() async {
+  String groupName = groupNameController.text;
+  String invitedPerson = invitedPersonController.text;
+  List<String> invitedPeople = invitedPerson.split(',');
 
-      Group newGroup = Group(groupName, invitedPeople, groupId);
-      groups.add(newGroup);
+  // Prepare the data for the HTTP request
+  Map<String, dynamic> requestData = {
+    "userId": 4,
+    "group_name": groupName,
+    "invited_users": invitedPeople.map((email) => {"email": email}).toList(),
+  };
 
-      // Clear the text fields
-      groupNameController.clear();
-      invitedPersonController.clear();
+  // Send the HTTP request
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2:8080/groups/create'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(requestData),
+  );
 
-      print('Create Group: $newGroup');
+  // Check if the request was successful (status code 201)
+  if (response.statusCode == 201) {
+    // Parse the response JSON
+  
+    // Clear the text fields
+    groupNameController.clear();
+    invitedPersonController.clear();
 
-      // Pass the created group back to the main screen
-      Navigator.pop(context, newGroup);
-    });
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MyMain(),
+    ),
+  );
+
+   
+  } else {
+  
+    groupNameController.clear();
+    invitedPersonController.clear();
+
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MyMain(),
+    ),
+  );
+
   }
+}
 }

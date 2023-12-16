@@ -1,13 +1,41 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../widgets/PlaceMemoDialogs.dart';
 import '../widgets/VerticalLinePainter.dart';
+import '../widgets/MyProvider.dart';
+
+
+
+
+// void main() {
+//   runApp(
+//     ChangeNotifierProvider<MyProvider>(
+//       create: (context) => MyProvider(),
+//       builder: (context, _) => MaterialApp(
+//         home: PlaceMemo(selectedLocation: "", selectedDate: ""),
+//       ),
+//     ),
+//   );
+// }
 
 class PlaceMemo extends StatefulWidget {
   final String selectedLocation;
   final String selectedDate;
+  final int groupId;
+  final int locationId;
+  final int coloringLocationId;
 
-  PlaceMemo({required this.selectedLocation, required this.selectedDate});
+   const PlaceMemo({
+    Key? key,
+    required this.selectedLocation,
+    required this.selectedDate,
+    required this.groupId,
+    required this.locationId,
+    required this.coloringLocationId,
+  }) : super(key: key);
 
   @override
   _PlaceMemoState createState() => _PlaceMemoState();
@@ -34,6 +62,14 @@ class _PlaceMemoState extends State<PlaceMemo> {
 
   @override
   Widget build(BuildContext context) {
+
+    // final myProvider = Provider.of<MyProvider>(context);
+
+    // // 가져온 데이터 사용
+    final int locationId = widget.locationId;
+    final int coloringLocationId = widget.coloringLocationId;
+    final int groupId = widget.groupId;
+
     DateTime startDate =
         DateFormat('yyyy-MM-dd').parse(widget.selectedDate.split(' - ')[0]);
     DateTime endDate =
@@ -174,6 +210,9 @@ class _PlaceMemoState extends State<PlaceMemo> {
                                   SizedBox(width: 10),
                                   GestureDetector(
                                     onTap: () {
+                                      print(locationId);
+                                      print(coloringLocationId);
+                                      print(groupId);
                                       _showPlaceDialog(date);
                                     },
                                     child: Icon(
@@ -324,7 +363,13 @@ class _PlaceMemoState extends State<PlaceMemo> {
   }
 
   Future<void> _showPlaceDialog(String date) async {
-    await PlaceMemoDialogs.showPlaceDialog(context, date, (newPlace) {
+  await PlaceMemoDialogs.showPlaceDialog(
+    context,
+    date,
+    widget.groupId,  // Pass groupId
+    widget.locationId,  // Pass locationId
+    widget.coloringLocationId,  // Pass coloringLocationId
+    (newPlace) {
       setState(() {
         if (placesAndMemosByDate.containsKey(date)) {
           placesAndMemosByDate[date]!.add(newPlace);
@@ -332,11 +377,15 @@ class _PlaceMemoState extends State<PlaceMemo> {
           placesAndMemosByDate[date] = [newPlace];
         }
       });
-    });
-  }
+    },
+  );
+}
+
 
   Future<void> _showMemoDialog(String date) async {
-    await PlaceMemoDialogs.showMemoDialog(context, date, (newMemo) {
+    await PlaceMemoDialogs.showMemoDialog(context, date, widget.groupId,  // Pass groupId
+    widget.locationId,  // Pass locationId
+    widget.coloringLocationId, (newMemo) {
       setState(() {
         if (placesAndMemosByDate.containsKey(date)) {
           placesAndMemosByDate[date]!.add(newMemo);

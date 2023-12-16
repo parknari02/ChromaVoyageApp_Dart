@@ -28,6 +28,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController; // late 키워드 추가
   List<Polygon> polygons = [];
+  List<Marker> markers = [];
   String selectedLocation = "";
 
   @override
@@ -35,13 +36,53 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     loadPolygons();
     fetchData();
+    fetchData2();
   }
+
+  Future<void> fetchData2() async {
+  try {
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8080/places/totalList'),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> placeList = json.decode(utf8.decode(response.bodyBytes));
+
+      List<Marker> updatedMarkers = [];
+
+      placeList.forEach((place) {
+        double latitude = place['latitude'];
+        double longitude = place['longitude'];
+        String placeName = place['placeName'];
+
+       BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
+
+      Marker marker = Marker(
+        markerId: MarkerId(placeName),
+        position: LatLng(latitude, longitude),
+        infoWindow: InfoWindow(title: placeName),
+        icon: markerIcon,
+      );
+
+        updatedMarkers.add(marker);
+      });
+
+      setState(() {
+        markers = updatedMarkers;
+      });
+    } else {
+      print('Data load failed. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
 
   Future<void> fetchData() async {
     try {
       final response = await http.post(
         Uri.parse('http://10.0.2.2:8080/locations'),
-        body: json.encode({'userId': 1}),
+        body: json.encode({'userId': 4}),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -146,16 +187,19 @@ class _MapScreenState extends State<MapScreen> {
   }
 
 void showBottomSheet(String locationName) async {
+  print(locationName);
   if (locationName.isNotEmpty) {
     try {
       final response = await http.post(
         Uri.parse('http://10.0.2.2:8080/groups/location'),
-        body: json.encode({'userId': 1, 'locationName': locationName}),
+        body: json.encode({'userId': 4, 'locationName': locationName}),
         headers: {'Content-Type': 'application/json'},
       );
 
       if (response.statusCode == 200) {
+        print("요청감");
         List<dynamic> groupData = json.decode(utf8.decode(response.bodyBytes));
+        print(groupData);
 
         // BottomSheet 표시
         showModalBottomSheet(
@@ -187,6 +231,9 @@ void showBottomSheet(String locationName) async {
                           int startDateInMillis = groupData[index]['startDate'];
                           int endDateInMillis = groupData[index]['endDate'];
                           String groupName = groupData[index]['groupName'];
+                          int coloringLocationId = groupData[index]['coloringLocationId'];
+                          int locationId = groupData[index]['locationId'];
+                          int groupId = groupData[index]['groupId'];
 
                           // Convert to local time
                           DateTime startDateUTC = DateTime.fromMillisecondsSinceEpoch(startDateInMillis, isUtc: true);
@@ -223,6 +270,9 @@ void showBottomSheet(String locationName) async {
                                           groupName: groupName,
                                           startDate: startDate,
                                           endDate: endDate,
+                                          coloringLocationId: coloringLocationId,
+                                          locationId: locationId,
+                                          groupId: groupId,
                                         ),
                                       ),
                                     );
@@ -320,6 +370,7 @@ void showBottomSheet(String locationName) async {
           zoom: 7.0,
         ),
         polygons: Set<Polygon>.of(polygons),
+         markers: Set<Marker>.of(markers),
         onTap: (LatLng latLng) {
           String selectedLocation = identifyLocation(latLng);
           if (selectedLocation.isNotEmpty) {

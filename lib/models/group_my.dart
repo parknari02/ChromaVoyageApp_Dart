@@ -1,11 +1,11 @@
-class Group {
+class MyGroup {
   int groupId;
   String groupName;
   DateTime createdDate;
   bool pin;
   List<String> groupMembers;
 
-  Group({
+  MyGroup({
     required this.groupId,
     required this.groupName,
     required this.createdDate,
@@ -14,8 +14,8 @@ class Group {
   });
 
   // 이 메서드를 추가합니다.
-  factory Group.fromJson(Map<String, dynamic> json) {
-    return Group(
+  factory MyGroup.fromJson(Map<String, dynamic> json) {
+    return MyGroup(
       groupId: json['groupId'],
       groupName: json['groupName'],
       createdDate: DateTime.parse(json['createdDate']),
